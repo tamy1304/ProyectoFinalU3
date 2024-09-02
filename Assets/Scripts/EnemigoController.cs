@@ -7,36 +7,31 @@ using TMPro;
 
 public class EnemigoController : MonoBehaviour
 {
-    public int rutina;
-    public float cronometro;
     public Animator ani;
-    public Quaternion angulo;
-    public float grado;
-
     public NavMeshAgent agente;
-    public float radio_vision = 10f;  // Radio de visión del enemigo
-    public float speed = 3.5f;        // Velocidad del agente
+    public float radio_vision = 10f; 
+    public float speed = 3.5f;        
 
     public GameObject target;
     private Vector3 destinoAleatorio;
     private bool tieneDestino = false;
 
-    public TMP_Text mensajeRaptado;  // Referencia al texto de la UI para mostrar el mensaje
+    public TMP_Text mensajeRaptado;  
     public Button botonReiniciar;
 
     void Start()
     {
         ani = GetComponent<Animator>();
-        agente = GetComponent<NavMeshAgent>();  // Inicializa el NavMeshAgent
-        agente.speed = speed;  // Asigna la velocidad del agente
+        agente = GetComponent<NavMeshAgent>(); 
+        agente.speed = speed; 
 
-        mensajeRaptado.gameObject.SetActive(false);  // Asegúrate de que el mensaje esté oculto al inicio
+        mensajeRaptado.gameObject.SetActive(false);  
         botonReiniciar.gameObject.SetActive(false);
     }
 
     void Update()
     {
-        target = GameObject.Find("cat");  // Asigna el objetivo en cada actualización
+        target = GameObject.Find("cat"); 
         ComportamientoEnemigo();
     }
 
@@ -49,21 +44,20 @@ public class EnemigoController : MonoBehaviour
             ani.SetBool("run", false);
             ani.SetBool("walk", true);
 
-            if (!tieneDestino || agente.remainingDistance < 0.5f) // Si no tiene destino o ya ha llegado al destino anterior
+            if (!tieneDestino || agente.remainingDistance < 0.5f) 
             {
                 GenerarDestinoAleatorio();
             }
-
-            agente.SetDestination(destinoAleatorio); // Mover al enemigo hacia el destino aleatorio
+            agente.SetDestination(destinoAleatorio);
 
         }
         else
         {
-            tieneDestino = false; // Resetea el destino aleatorio cuando el jugador está en rango
+            tieneDestino = false;
 
             if (agente.isOnNavMesh)
             {
-                agente.SetDestination(target.transform.position);  // Establece el destino hacia el target
+                agente.SetDestination(target.transform.position);
 
                 var lookPos = target.transform.position - transform.position;
                 lookPos.y = 0;
@@ -76,8 +70,6 @@ public class EnemigoController : MonoBehaviour
             else
             {
                 Debug.LogWarning("El agente no está en un NavMesh válido. Reposicionando...");
-
-                // Intenta reposicionar el agente en un punto válido en el NavMesh
                 NavMeshHit hit;
                 if (NavMesh.SamplePosition(transform.position, out hit, 1.0f, NavMesh.AllAreas))
                 {
@@ -105,14 +97,13 @@ public class EnemigoController : MonoBehaviour
         }
     }
 
-    // Detecta la colisión con el jugador
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.name == "cat")
         {
-            Time.timeScale = 0;  // Pausa el juego
-            mensajeRaptado.text = "Has sido raptado";  // Cambia el texto del mensaje
-            mensajeRaptado.gameObject.SetActive(true);  // Muestra el mensaje en pantalla
+            Time.timeScale = 0; 
+            mensajeRaptado.text = "Has sido raptado"; 
+            mensajeRaptado.gameObject.SetActive(true); 
             botonReiniciar.gameObject.SetActive(true);
         }
     }

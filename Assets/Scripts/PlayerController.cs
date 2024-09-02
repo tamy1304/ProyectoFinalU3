@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; // Necesario para manejar la UI
+using UnityEngine.UI; 
 using TMPro;
 using UnityEngine.SceneManagement;
 
@@ -21,13 +21,13 @@ public class PlayerController : MonoBehaviour
     private Vector3 moveDirection = Vector3.zero;
     private Quaternion currentRotation;
 
-    public TMP_Text mensajeCasa;  // Referencia al texto de la UI para mostrar el mensaje
+    public TMP_Text mensajeCasa;  
     public Button botonReiniciar;
 
     void Start()
     {
         currentRotation = transform.rotation;
-        mensajeCasa.gameObject.SetActive(false);  // Asegúrate de que el mensaje esté oculto al inicio
+        mensajeCasa.gameObject.SetActive(false);  
         botonReiniciar.gameObject.SetActive(false);
     }
 
@@ -96,21 +96,20 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Detecta la colisión con la casa
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "casa")
         {
-            Time.timeScale = 0;  // Pausa el juego
-            mensajeCasa.text = "Has llegado a casa. ¡Felicidades!";  // Cambia el texto del mensaje
-            mensajeCasa.gameObject.SetActive(true);  // Muestra el mensaje en pantalla
+            Time.timeScale = 0; 
+            mensajeCasa.text = "Has llegado a casa. ¡Felicidades!"; 
+            mensajeCasa.gameObject.SetActive(true); 
             botonReiniciar.gameObject.SetActive(true);
         }
     }
 
     public void ReiniciarJuego()
     {
-        Time.timeScale = 1;  // Restablece el tiempo del juego
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);  // Reinicia la escena actual
+        Time.timeScale = 1; 
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
